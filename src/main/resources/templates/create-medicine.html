@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Create Medicine</h1>
-<form action="#" th:action="@{/medicines}" th:object="${medicine}" method="post">
+<form action="#" th:action="@{/api/create-medicine}" th:object="${medicine}" method="post">
     <label for="name">Name:</label><br>
     <input type="text" id="name" th:field="*{name}"><br>
     <label for="price">Price:</label><br>

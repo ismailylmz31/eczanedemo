@@ -5,12 +5,13 @@ import com.yoneforcode.eczanedemo.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/medicines")
+@Controller
+@RequestMapping("/api")
 public class MedicineController {
 
     private final MedicineService medicineService;
@@ -38,16 +39,16 @@ public class MedicineController {
         return new ResponseEntity<>(savedMedicine, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    /*@DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMedicine(@PathVariable("id") Long id) {
         medicineService.deleteMedicine(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    } */
     @GetMapping("/medicines")
-    public String showMedicines(Model model) {
+    public String showMedicines(Model theModel) {
         List<Medicine> medicines = medicineService.getAllMedicines();
-        model.addAttribute("medicines", medicines);
-        return "redirect:/medicines"; // URL'yi /api/medicines yerine /medicines olarak değiştirin
+        theModel.addAttribute("medicines",medicines);
+        return "medicines"; // URL'yi /api/medicines yerine /medicines olarak değiştirin
     }
 
     @GetMapping("/create-medicine")
@@ -56,11 +57,28 @@ public class MedicineController {
         return "create-medicine";
     }
 
-    @PostMapping("/medicines")
+    @PostMapping("/create-medicine")
     public String createMedicine(@ModelAttribute("medicine") Medicine medicine) {
         medicineService.saveMedicine(medicine);
-        return "redirect:/medicines"; // URL'yi /api/medicines yerine /medicines olarak değiştirin
+        return "redirect:medicines";
     }
+
+    @DeleteMapping("/medicines/{id}")
+    public String deleteMedicineWithPostman(@PathVariable("id") Long id) {
+        medicineService.deleteMedicine(id);
+
+        return "redirect:/api/medicines";
+    }
+
+
+
+    @GetMapping("/delete-medicine/{id}")
+    public String deleteMedicine(@PathVariable("id") Long id) {
+        medicineService.deleteMedicine(id);
+        return "redirect:/api/medicines";
+    }
+
+
 
 
 
