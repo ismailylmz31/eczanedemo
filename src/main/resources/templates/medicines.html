@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBV84Yaw5YZhQDZCWlUOAxfYErWumJkAXk&libraries=places"></script>
+
     <title>Medicines List</title>
     <style>
         .add-button {
@@ -50,6 +52,25 @@
     </tr>
     </tbody>
 </table>
+
+<h1>KNOUM ALMAK İÇİN BUTONA BAS</h1>
+    <button onclick="getLocation()">Konumu Bul</button>
+
+    <script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        console.log("Latitude: " + latitude + " Longitude: " + longitude);
+    }
+</script>
 
 </body>
 </html>
