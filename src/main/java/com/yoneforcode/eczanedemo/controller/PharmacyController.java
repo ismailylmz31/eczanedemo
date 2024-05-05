@@ -25,10 +25,9 @@ public class PharmacyController {
             return new ResponseEntity<>(nearbyPharmacies, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         }
 
-        }
     }
+}
 
 

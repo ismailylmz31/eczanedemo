@@ -24,7 +24,11 @@
             border-radius: 3px;
             cursor: pointer;
         }
-
+        /* Stil tanımları */
+        #map {
+            height: 400px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -71,6 +75,66 @@
         console.log("Latitude: " + latitude + " Longitude: " + longitude);
     }
 </script>
+
+<h1>Eczaneler</h1>
+<div id="map"></div>
+
+<script>
+    // Google Haritalar API Key
+    const apiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+
+    // Belirli bir konumun çevresindeki eczaneleri aramak için kullanılacak olan fonksiyon
+    function findNearbyPharmacies() {
+        // Hedef konumun koordinatları (örneğin, İstanbul)
+        const latitude = 41.0082;
+        const longitude = 28.9784;
+
+        // Harita oluştur
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: latitude, lng: longitude },
+            zoom: 15
+        });
+
+        // Eczaneler için yer işaretleri oluşturulacak
+        const pharmacyIcon = {
+            url: 'https://maps.gstatic.com/mapfiles/place_api/icons/doctor-71.png',
+            scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // PlacesService nesnesi oluştur
+        const service = new google.maps.places.PlacesService(map);
+
+        // Eczaneler araması yap
+        service.nearbySearch({
+            location: { lat: latitude, lng: longitude },
+            radius: 5000, // 5 kilometrelik bir yarıçap
+            type: 'pharmacy' // Eczaneler için arama tipi
+        }, (results, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
+            }
+        });
+
+        // Yer işareti oluşturma fonksiyonu
+        function createMarker(place) {
+            const marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                icon: pharmacyIcon,
+                title: place.name
+            });
+        }
+    }
+
+    // Google Haritalar API yüklendikten sonra findNearbyPharmacies() fonksiyonunu çağır
+    function initMap() {
+        findNearbyPharmacies();
+    }
+</script>
+<!-- Google Haritalar API'sini yükle -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBV84Yaw5YZhQDZCWlUOAxfYErWumJkAXk&libraries=places&callback=initMap"></script>
 
 </body>
 </html>
